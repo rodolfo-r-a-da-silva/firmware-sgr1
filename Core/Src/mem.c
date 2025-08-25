@@ -48,7 +48,7 @@ int32_t mem_load_can_msg_freqs(int32_t p_periods[], uint8_t n_of_periods) {
   if (p_periods == NULL) { return -1; }
 
   uint8_t buffer[MEM_CAN_MSG_FREQ_SIZE];
-  uint32_t addr = BSP_GetAppMemAddress();
+  uint32_t addr = BSP_GetAppMemAddress() + MEM_CAN_CFG_SIZE;
 
   int32_t ret = BSP_EEPROM_ReadBuffer(0U, &buffer[0], addr, sizeof(buffer));
 
