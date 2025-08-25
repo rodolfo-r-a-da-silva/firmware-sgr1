@@ -1,0 +1,16 @@
+# STM32CubeIDE
+.launch
+.metadata/
+.settings/
+!.settings/org.eclipse.cdt.codan.core.prefs
+
+# Build outputs
+*.cyclo
+*.d
+*.elf
+*.o
+*.list
+*.map
+*.mk
+*.su
+makefile
