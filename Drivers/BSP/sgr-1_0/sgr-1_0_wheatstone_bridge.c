@@ -16,18 +16,32 @@
 
 #define BSP_WBRIDGE_MEM_SIZE 4U
 
+/**
+ * @brief Data storage for each of the Wheatstone bridge instances
+ */
 static struct {
-  int32_t zero_offset;  // ADC raw zero voltage offset value
+  int32_t zero_offset;  /**< ADC raw zero offset voltage value */
 
-  uint8_t init_counter;  // Number of times initialized by application layer
+  uint8_t init_counter;  /**< Number of times initialized by application layer */
 
   // Auxiliary data to waste no time allocating memory
-  int32_t voltage;  // Wheatstone bridge differential voltage in nV/V
-  int32_t raw_voltage;  // Raw ADC voltage value
-  int32_t raw[2];
-  int32_t cal[2];
+  int32_t voltage;  /**< Wheatstone bridge differential voltage in nV/V */
+  int32_t raw_voltage;  /**< Raw ADC voltage value */
+  int32_t raw[2];  /**< Raw voltage value for interpolation */
+  int32_t cal[2];  /**< Calculated voltage value for interpolation */
 } wbridge_ctx[BSP_WBRIDGE_CHANNELS] = { 0 };
 
+/**
+ * @brief Initializes one Wheatstone bridge instance
+ *
+ * Initializes the peripheral used for sensing (ADC in this case), calculates
+ * values for interpolation used in the BSP_WBRIDGE_GetVoltage function. The
+ * voltage values are calculated from the zero offset voltage and amplifier
+ * circuit gain that are stored in the EEPROM.
+ *
+ * @param instance The number of the instance to be initialized
+ * @return An error code if lesser than zero
+ */
 int32_t BSP_WBRIDGE_Init(WheatstoneBridge_t instance) {
 	if (instance >= BSP_WBRIDGE_CHANNELS) {
 		return BSP_ERROR_WRONG_PARAM;
@@ -73,6 +87,14 @@ int32_t BSP_WBRIDGE_Init(WheatstoneBridge_t instance) {
 	return ret_val;
 }
 
+/**
+ * @brief Deinitializes one Wheatstone bridge instance
+ *
+ * Deinitializes the peripheral used for sensing (ADC in this case).
+ *
+ * @param instance The number of the instance to be deinitialized
+ * @return An error code if lesser than zero
+ */
 int32_t BSP_WBRIDGE_DeInit(WheatstoneBridge_t instance) {
   if (instance >= BSP_WBRIDGE_CHANNELS) {
     return BSP_ERROR_WRONG_PARAM;
@@ -95,6 +117,14 @@ int32_t BSP_WBRIDGE_DeInit(WheatstoneBridge_t instance) {
   return ret_val;
 }
 
+/**
+ * @brief Get the Wheatstone bridge differential voltage in uV/V
+ *
+ * @param instance The number of the instance of interest
+ * @param p_voltage A pointer to the variable that stores the voltage out of
+ * this file's scope
+ * @return An error code if lesser than zero, new data if higher than zero
+ */
 int32_t BSP_WBRIDGE_GetVoltage(WheatstoneBridge_t instance, int32_t* p_voltage) {
 	if ((instance >= BSP_WBRIDGE_CHANNELS) || (p_voltage == NULL)) {
 		return BSP_ERROR_WRONG_PARAM;
@@ -120,6 +150,14 @@ int32_t BSP_WBRIDGE_GetVoltage(WheatstoneBridge_t instance, int32_t* p_voltage) 
   return ret_val;
 }
 
+/**
+ * @brief Get the voltage output data rate in Hz
+ *
+ * @param instance The number of the instance of interest
+ * @param p_odr A pointer to the variable that stores the output data rate out
+ * of this file's scope
+ * @return An error code if lesser than zero, new data if higher than zero
+ */
 int32_t BSP_WBRIDGE_GetOutputDataRate(WheatstoneBridge_t instance, float* p_odr) {
 	if ((instance >= BSP_WBRIDGE_CHANNELS) || (p_odr == NULL)) {
 			return BSP_ERROR_WRONG_PARAM;
@@ -132,6 +170,19 @@ int32_t BSP_WBRIDGE_GetOutputDataRate(WheatstoneBridge_t instance, float* p_odr)
 	return BSP_ADC_GetOuputDataRate(BSP_WBRIDGE_ADC_START + instance, p_odr);
 }
 
+/**
+ * @brief Save the input zero offset voltage in the EEPROM
+ *
+ * This function shall be used to calibrate each instance of the Wheatstone
+ * bridges. By saving the offset to the EEPROM, it is possible to flash new
+ * firmwares without losing the initial calibration.
+ *
+ * @param instance The number of the instance of interest
+ * @param value The output value (in uV/V) for when the differential input
+ * voltage is zeroed
+ * @return An error code if lesser than zero, number of bytes written to the
+ * EEPROM if higher than zero
+ */
 int32_t BSP_WBRIDGE_SetZeroOffset(WheatstoneBridge_t instance, int32_t value) {
   if (instance >= BSP_WBRIDGE_CHANNELS) {
       return BSP_ERROR_WRONG_PARAM;
