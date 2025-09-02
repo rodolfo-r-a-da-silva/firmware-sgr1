@@ -40,7 +40,7 @@ static struct {
  * circuit gain that are stored in the EEPROM.
  *
  * @param instance The number of the instance to be initialized
- * @return An error code if lesser than zero
+ * @return An error code if negative
  */
 int32_t BSP_WBRIDGE_Init(WheatstoneBridge_t instance) {
 	if (instance >= BSP_WBRIDGE_CHANNELS) {
@@ -93,7 +93,7 @@ int32_t BSP_WBRIDGE_Init(WheatstoneBridge_t instance) {
  * Deinitializes the peripheral used for sensing (ADC in this case).
  *
  * @param instance The number of the instance to be deinitialized
- * @return An error code if lesser than zero
+ * @return An error code if negative
  */
 int32_t BSP_WBRIDGE_DeInit(WheatstoneBridge_t instance) {
   if (instance >= BSP_WBRIDGE_CHANNELS) {
@@ -123,7 +123,7 @@ int32_t BSP_WBRIDGE_DeInit(WheatstoneBridge_t instance) {
  * @param instance The number of the instance of interest
  * @param p_voltage A pointer to the variable that stores the voltage out of
  * this file's scope
- * @return An error code if lesser than zero, new data if higher than zero
+ * @return An error code if negative, new data if higher than zero
  */
 int32_t BSP_WBRIDGE_GetVoltage(WheatstoneBridge_t instance, int32_t* p_voltage) {
 	if ((instance >= BSP_WBRIDGE_CHANNELS) || (p_voltage == NULL)) {
@@ -156,7 +156,7 @@ int32_t BSP_WBRIDGE_GetVoltage(WheatstoneBridge_t instance, int32_t* p_voltage) 
  * @param instance The number of the instance of interest
  * @param p_odr A pointer to the variable that stores the output data rate out
  * of this file's scope
- * @return An error code if lesser than zero, new data if higher than zero
+ * @return An error code if negative, new data if higher than zero
  */
 int32_t BSP_WBRIDGE_GetOutputDataRate(WheatstoneBridge_t instance, float* p_odr) {
 	if ((instance >= BSP_WBRIDGE_CHANNELS) || (p_odr == NULL)) {
@@ -180,8 +180,8 @@ int32_t BSP_WBRIDGE_GetOutputDataRate(WheatstoneBridge_t instance, float* p_odr)
  * @param instance The number of the instance of interest
  * @param value The output value (in uV/V) for when the differential input
  * voltage is zeroed
- * @return An error code if lesser than zero, number of bytes written to the
- * EEPROM if higher than zero
+ * @return An error code if negative, number of bytes written to the EEPROM if
+ * higher than zero
  */
 int32_t BSP_WBRIDGE_SetZeroOffset(WheatstoneBridge_t instance, int32_t value) {
   if (instance >= BSP_WBRIDGE_CHANNELS) {
