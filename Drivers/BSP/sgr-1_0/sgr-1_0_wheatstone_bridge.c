@@ -118,6 +118,26 @@ int32_t BSP_WBRIDGE_DeInit(WheatstoneBridge_t instance) {
 }
 
 /**
+ * @brief Get the Wheatstone bridge pre-conversion differential voltage
+ *
+ * @param instance The number of the instance of interest
+ * @param p_raw_voltage A pointer to the variable that stores the raw voltage
+ * out of this file's scope
+ * @return An error code if negative, new data if higher than zero
+ */
+int32_t BSP_WBRIDGE_GetRawVoltage(WheatstoneBridge_t instance, int32_t* p_raw_voltage) {
+  if ((instance >= BSP_WBRIDGE_CHANNELS) || (p_voltage == NULL)) {
+    return BSP_ERROR_WRONG_PARAM;
+  } else if (wbridge_ctx[instance].init_counter == 0U) {
+    return BSP_ERROR_NO_INIT;
+  } else {
+    // Do nothing
+  }
+
+  return BSP_ADC_GetData(instance, &wbridge_ctx[instance].raw_voltage);
+}
+
+/**
  * @brief Get the Wheatstone bridge differential voltage in uV/V
  *
  * @param instance The number of the instance of interest
@@ -126,9 +146,9 @@ int32_t BSP_WBRIDGE_DeInit(WheatstoneBridge_t instance) {
  * @return An error code if negative, new data if higher than zero
  */
 int32_t BSP_WBRIDGE_GetVoltage(WheatstoneBridge_t instance, int32_t* p_voltage) {
-	if ((instance >= BSP_WBRIDGE_CHANNELS) || (p_voltage == NULL)) {
-		return BSP_ERROR_WRONG_PARAM;
-	} else if (wbridge_ctx[instance].init_counter == 0U) {
+  if ((instance >= BSP_WBRIDGE_CHANNELS) || (p_voltage == NULL)) {
+    return BSP_ERROR_WRONG_PARAM;
+  } else if (wbridge_ctx[instance].init_counter == 0U) {
     return BSP_ERROR_NO_INIT;
   } else {
     // Do nothing
