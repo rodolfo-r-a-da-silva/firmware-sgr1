@@ -10,6 +10,12 @@
 static GPIO_TypeDef* led_port[kLedAmount] = { LED1_LED_PORT, LED2_LED_PORT};
 static const int32_t led_pin[kLedAmount] = { LED1_PIN, LED2_PIN };
 
+/**
+ * @brief Initialize a specific LED instance
+ *
+ * @param led The LED's enum value
+ * @return An error code if negative
+ */
 int32_t BSP_LED_Init(Led_t led) {
 	GPIO_InitTypeDef gpio_init_structure;
 
@@ -37,6 +43,12 @@ int32_t BSP_LED_Init(Led_t led) {
 	return BSP_ERROR_NONE;
 }
 
+/**
+ * @brief Deinitialize a specific LED instance
+ *
+ * @param led The LED's enum value
+ * @return An error code if negative
+ */
 int32_t BSP_LED_DeInit(Led_t led) {
 	if ((led < kLed1) || led >= kLedAmount) {
 		return BSP_ERROR_WRONG_PARAM;
@@ -54,6 +66,12 @@ int32_t BSP_LED_DeInit(Led_t led) {
 	return BSP_ERROR_NONE;
 }
 
+/**
+ * @brief Turn a LED on
+ *
+ * @param led The LED's enum value
+ * @return An error code if negative
+ */
 int32_t BSP_LED_On(Led_t led) {
 	if ((led < kLed1) || led >= kLedAmount) {
 		return BSP_ERROR_WRONG_PARAM;
@@ -64,6 +82,12 @@ int32_t BSP_LED_On(Led_t led) {
 	return BSP_ERROR_NONE;
 }
 
+/**
+ * @brief Turn a LED off
+ *
+ * @param led The LED's enum value
+ * @return An error code if negative
+ */
 int32_t BSP_LED_Off(Led_t led) {
 	if ((led < kLed1) || led >= kLedAmount) {
 		return BSP_ERROR_WRONG_PARAM;
@@ -73,6 +97,12 @@ int32_t BSP_LED_Off(Led_t led) {
 	return BSP_ERROR_NONE;
 }
 
+/**
+ * @brief Toggle the state of a LED
+ *
+ * @param led The LED's enum value
+ * @return An error code if negative
+ */
 int32_t BSP_LED_Toggle(Led_t led) {
 	if ((led < kLed1) || led >= kLedAmount) {
 		return BSP_ERROR_WRONG_PARAM;
@@ -83,6 +113,12 @@ int32_t BSP_LED_Toggle(Led_t led) {
 	return BSP_ERROR_NONE;
 }
 
+/**
+ * @brief Get the current state of a LED
+ *
+ * @param led The LED's enum value
+ * @return An error code if negative, zero or one as the LED's state
+ */
 int32_t BSP_LED_GetState(Led_t led) {
 	if ((led < kLed1) || led >= kLedAmount) {
 		return BSP_ERROR_WRONG_PARAM;
