@@ -78,7 +78,7 @@ int32_t BSP_WBRIDGE_Init(WheatstoneBridge_t instance) {
 	    wbridge_ctx[instance].raw[i] = i * fullscale;
 	    wbridge_ctx[instance].cal[i] =
 	        (int32_t) (((double) (wbridge_ctx[instance].raw[i] - wbridge_ctx[instance].zero_offset)
-	        * BSP_WBRIDGE_READING_VOLTAGE) * 10000000.0 / (((double) BSP_WBRIDGE_VCC) * ((double) fullscale) * gain));
+	        * BSP_WBRIDGE_READING_VOLTAGE * 10000000.0) / (((double) BSP_WBRIDGE_VCC) * ((double) fullscale) * gain));
 	  }
 	} else {
 	  --wbridge_ctx[instance].init_counter;
