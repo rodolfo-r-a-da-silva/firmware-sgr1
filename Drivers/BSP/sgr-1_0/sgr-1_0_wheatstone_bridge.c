@@ -126,7 +126,7 @@ int32_t BSP_WBRIDGE_DeInit(WheatstoneBridge_t instance) {
  * @return An error code if negative, new data if higher than zero
  */
 int32_t BSP_WBRIDGE_GetRawVoltage(WheatstoneBridge_t instance, int32_t* p_raw_voltage) {
-  if ((instance >= BSP_WBRIDGE_CHANNELS) || (p_voltage == NULL)) {
+  if ((instance >= BSP_WBRIDGE_CHANNELS) || (p_raw_voltage == NULL)) {
     return BSP_ERROR_WRONG_PARAM;
   } else if (wbridge_ctx[instance].init_counter == 0U) {
     return BSP_ERROR_NO_INIT;
