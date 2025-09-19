@@ -24,11 +24,12 @@ static struct {
 
   uint8_t init_counter;  /**< Number of times initialized by application layer */
 
-  // Auxiliary data to waste no time allocating memory
+  // Auxiliary data to decrease time allocating memory
   int32_t voltage;  /**< Wheatstone bridge differential voltage in nV/V */
   int32_t raw_voltage;  /**< Raw ADC voltage value */
   int32_t raw[2];  /**< Raw voltage value for interpolation */
   int32_t cal[2];  /**< Calculated voltage value for interpolation */
+  int64_t acc;  /** < Auxiliary accumulator for linear interpolation calculation */
 } wbridge_ctx[BSP_WBRIDGE_CHANNELS] = { 0 };
 
 /**
@@ -158,10 +159,12 @@ int32_t BSP_WBRIDGE_GetVoltage(WheatstoneBridge_t instance, int32_t* p_voltage) 
 
   if (ret_val == BSP_ADC_DATA_READY) {
     // Linear interpolation
-    wbridge_ctx[instance].voltage = (((wbridge_ctx[instance].raw_voltage
-        * ((wbridge_ctx[instance].cal[1]-wbridge_ctx[instance].cal[0])))
-        / wbridge_ctx[instance].raw[1])
-        + wbridge_ctx[instance].cal[0]) * 100;
+	wbridge_ctx[instance].acc = ((int64_t) wbridge_ctx[instance].cal[0])
+        * ((int64_t) ((((int32_t) ((1U << 31U) - 1U)) - wbridge_ctx[instance].raw_voltage)));
+	wbridge_ctx[instance].acc += ((int64_t) wbridge_ctx[instance].cal[1])
+		* ((int64_t) wbridge_ctx[instance].raw_voltage);
+
+    wbridge_ctx[instance].voltage = (int32_t) (((uint64_t) wbridge_ctx[instance].acc) >> 31U);
   }
 
   // Get last successfully read value
