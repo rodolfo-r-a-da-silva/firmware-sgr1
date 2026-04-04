@@ -1,8 +1,6 @@
-# STM32CubeIDE
-.launch
-.metadata/
+# VS Code
 .settings/
-!.settings/org.eclipse.cdt.codan.core.prefs
+.vscode/
 
 # Build outputs
 build/
