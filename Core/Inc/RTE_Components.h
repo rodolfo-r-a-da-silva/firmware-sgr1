@@ -22,7 +22,7 @@
 #define  __RTE_COMPONENTS_H__
 
 /* Defines ------------------------------------------------------------------*/
-/* STMicroelectronics.X-CUBE-EEPRMA1.5.1.0 */
+/* STMicroelectronics.X-CUBE-EEPRMA1.5.2.0 */
 #define M24XX_M24_I2C
 
 #endif /* __RTE_COMPONENTS_H__ */
