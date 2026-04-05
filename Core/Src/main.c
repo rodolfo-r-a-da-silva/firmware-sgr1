@@ -21,6 +21,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <assert.h>
+
 #include "bsp.h"
 #include "led.h"
 #include "Lib/dsp.h"

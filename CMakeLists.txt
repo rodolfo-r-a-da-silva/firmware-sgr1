@@ -37,6 +37,9 @@ add_executable(${CMAKE_PROJECT_NAME})
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
 
+# Add BSP library
+add_subdirectory(Drivers/BSP/sgr-1_0)
+
 # Link directories setup
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined library search paths
@@ -45,16 +48,24 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
+    ${CMAKE_CURRENT_SOURCE_DIR}/Core/Lib/dsp.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Core/Lib/readings.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/mem.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/messaging.c
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
+    ${CMAKE_CURRENT_SOURCE_DIR}/Core
+    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/BSP
+    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/BSP/Components/Common
 )
 
 # Add project symbols (macros)
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined symbols
+    BSP_BOARD_SGR_1_0
 )
 
 # Remove wrong libob.a library dependency when using cpp files
@@ -65,4 +76,5 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
 
     # Add user defined libraries
+    bsp_sgr-1_0
 )
