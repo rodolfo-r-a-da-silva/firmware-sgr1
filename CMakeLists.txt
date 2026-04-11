@@ -36,7 +36,7 @@ add_executable(${CMAKE_PROJECT_NAME})
 
 # Add compiler definitions
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE
-    -O2 -Wall -Werror
+    $<$<COMPILE_LANGUAGE:C>:-O2 -Wall -Werror>
 )
 
 # Add STM32CubeMX generated sources
